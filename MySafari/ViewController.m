@@ -54,7 +54,13 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     NSString *URLString = textField.text;
-    NSURL *url = [NSURL URLWithString:URLString];
+    NSString *formatUrl = [NSString stringWithFormat:@"%@%@", @"http://",URLString];
+    
+    NSURL *url = [NSURL URLWithString:formatUrl];
+   
+    
+    NSLog(@"%@", formatUrl);
+
     
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
