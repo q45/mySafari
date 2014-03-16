@@ -18,6 +18,8 @@
 - (IBAction)onForwardButtonPressed:(id)sender;
 - (IBAction)onStopLoadingButtonPressed:(id)sender;
 - (IBAction)onReloadButtonPressed:(id)sender;
+
+- (IBAction)teaserButton:(id)sender;
 @end
 
 @implementation ViewController
@@ -90,5 +92,10 @@
 - (IBAction)onReloadButtonPressed:(id)sender
 {
     [self.myWebView reload];
+}
+
+- (IBAction)teaserButton:(id)sender {
+    UIAlertView *teaser = [[UIAlertView alloc]initWithTitle:@"Coming Soon    " message:@"We have big plans!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [teaser show];
 }
 @end
