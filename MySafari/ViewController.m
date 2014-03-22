@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController () <UIWebViewDelegate, UITextFieldDelegate, UIScrollViewDelegate, UITextFieldDelegate>
+@interface ViewController () <UIWebViewDelegate, UITextFieldDelegate, UIScrollViewDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate>
 @property (strong, nonatomic) IBOutlet UIWebView *myWebView;
 @property (strong, nonatomic) IBOutlet UITextField *myURLTextField;
 @property (strong, nonatomic) IBOutlet UIButton *forwardButton;
@@ -18,7 +18,6 @@
 - (IBAction)onForwardButtonPressed:(id)sender;
 - (IBAction)onStopLoadingButtonPressed:(id)sender;
 - (IBAction)onReloadButtonPressed:(id)sender;
-
 - (IBAction)teaserButton:(id)sender;
 @end
 
@@ -28,6 +27,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    //self.myURLTextField.text = @"http://";
+    
+    self.myWebView.scrollView.delegate = self;
+    
     if (self.myWebView.canGoForward) {
         [self.forwardButton setEnabled:TRUE];
     } else {
@@ -40,6 +43,10 @@
     } else {
         [self.backButton setEnabled:FALSE];
     }
+    
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(myWebView)];
+    gestureRecognizer.delegate = self;
+    [self.myWebView addGestureRecognizer:gestureRecognizer];
     
     
 }
@@ -117,13 +124,16 @@
     [teaser show];
 }
 
+#pragma mark - scrolling
+
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
-    self.myURLTextField.alpha = 0.0;
+    NSLog(@"%f", self.myWebView.scrollView.contentOffset.y);
     
-    if (self.myWebView.scrollView.decelerating == YES) {
-        [self.myURLTextField resignFirstResponder];
-        self.myURLTextField.alpha = 1.0;
+    if (self.myWebView.scrollView.contentOffset.y > 100) {
+        [[self myURLTextField] setHidden:YES];
+    } else {
+        [[self myURLTextField] setHidden:NO];
     }
 }
 @end
