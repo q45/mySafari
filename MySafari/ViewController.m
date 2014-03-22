@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController () <UIWebViewDelegate, UITextFieldDelegate>
+@interface ViewController () <UIWebViewDelegate, UITextFieldDelegate, UIScrollViewDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UIWebView *myWebView;
 @property (strong, nonatomic) IBOutlet UITextField *myURLTextField;
 @property (strong, nonatomic) IBOutlet UIButton *forwardButton;
@@ -40,6 +40,8 @@
     } else {
         [self.backButton setEnabled:FALSE];
     }
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,6 +53,20 @@
 -(void)webViewDidStartLoad:(UIWebView *)webView
 {
    
+}
+
+-(void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:FALSE];
+    if([self.myWebView canGoForward]) {
+        self.forwardButton.enabled = YES;
+    }
+    
+    if([self.myWebView canGoBack]) {
+        self.backButton.enabled = YES;
+    }
+    
+    self.myURLTextField.text = [self.myWebView stringByEvaluatingJavaScriptFromString:@"document.title"];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -67,6 +83,8 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     [self.myWebView loadRequest:request];
+    
+    [self.myURLTextField resignFirstResponder];
     
     return YES;
 }
@@ -85,7 +103,7 @@
     [self.myWebView goForward];
 }
 
-- (IBAction)onStopLoadingButtonPressed:(id)sende
+- (IBAction)onStopLoadingButtonPressed:(id)sender
 {
     [self.myWebView stopLoading];
 }
@@ -97,5 +115,15 @@
 - (IBAction)teaserButton:(id)sender {
     UIAlertView *teaser = [[UIAlertView alloc]initWithTitle:@"Coming Soon    " message:@"We have big plans!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [teaser show];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    self.myURLTextField.alpha = 0.0;
+    
+    if (self.myWebView.scrollView.decelerating == YES) {
+        [self.myURLTextField resignFirstResponder];
+        self.myURLTextField.alpha = 1.0;
+    }
 }
 @end

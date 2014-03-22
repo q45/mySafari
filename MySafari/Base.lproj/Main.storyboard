@@ -30,7 +30,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="URL" returnKeyType="go"/>
                                 <connections>
-                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="kc3-op-Oqr"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="08K-hC-qB8"/>
                                 </connections>
                             </textField>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j0j-9C-wao">
